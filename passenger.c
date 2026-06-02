@@ -1,30 +1,31 @@
 Passenger *loadPassengers(int *count){
     FILE *fp = fopen(PASSENGER_FILE, "rb");
-    Passenger *passengers = NULL;
-    int n;
-    long bytes;
 
     if(fp == NULL){
         *count = 0;
         return NULL;
     }
+    
+    Passenger *passengers = NULL;
+    int quantity;
+    long bytes;
 
     fseek(fp, 0, SEEK_END);
     bytes = ftell(fp);
     rewind(fp);
-    n = bytes / sizeof(Passenger);
+    quantity = bytes / sizeof(Passenger);
 
-    if(n > 0){
-        passengers = malloc(n * sizeof(Passenger));
+    if(quantity > 0){
+        passengers = malloc(quantity * sizeof(Passenger));
         if(passengers == NULL){
             printf("Erro de memória.\n");
             exit(1);
         }
-        fread(passengers, sizeof(Passenger), n, fp);
+        fread(passengers, sizeof(Passenger), quantity, fp);
     }
 
     fclose(fp);
-    *count = n;
+    *count = quantity;
     return passengers;
 }
 

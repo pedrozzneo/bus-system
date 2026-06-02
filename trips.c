@@ -4,31 +4,32 @@
 
 Trip *loadTrips(int *count){
     FILE *fp = fopen(TRIP_FILE, "rb");
-    Trip *trips = NULL;
-    int n;
-    long bytes;
 
     if(fp == NULL){
         *count = 0;
         return NULL;
     }
 
+    Trip *trips = NULL;
+    int quantity;
+    long bytes;
+
     fseek(fp, 0, SEEK_END);
     bytes = ftell(fp);
     rewind(fp);
-    n = bytes / sizeof(Trip);
+    quantity = bytes / sizeof(Trip);
 
-    if(n > 0){
-        trips = malloc(n * sizeof(Trip));
+    if(quantity > 0){
+        trips = malloc(quantity * sizeof(Trip));
         if(trips == NULL){
             printf("Erro de memória.\n");
             exit(1);
         }
-        fread(trips, sizeof(Trip), n, fp);
+        fread(trips, sizeof(Trip), quantity, fp);
     }
 
     fclose(fp);
-    *count = n;
+    *count = quantity;
     return trips;
 }
 

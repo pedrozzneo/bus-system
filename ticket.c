@@ -4,31 +4,32 @@
 
 Ticket *loadTickets(int *count){
     FILE *fp = fopen(TICKET_FILE, "rb");
-    Ticket *tickets = NULL;
-    int n;
-    long bytes;
 
     if(fp == NULL){
         *count = 0;
         return NULL;
     }
 
+    Ticket *tickets = NULL;
+    int quantity;
+    long bytes;
+
     fseek(fp, 0, SEEK_END);
     bytes = ftell(fp);
     rewind(fp);
-    n = bytes / sizeof(Ticket);
+    quantity = bytes / sizeof(Ticket);
 
-    if(n > 0){
-        tickets = malloc(n * sizeof(Ticket));
+    if(quantity > 0){
+        tickets = malloc(quantity * sizeof(Ticket));
         if(tickets == NULL){
             printf("Erro de memória.\n");
             exit(1);
         }
-        fread(tickets, sizeof(Ticket), n, fp);
+        fread(tickets, sizeof(Ticket), quantity, fp);
     }
 
     fclose(fp);
-    *count = n;
+    *count = quantity;
     return tickets;
 }
 
